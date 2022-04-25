@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <title>REGISTER</title>
+
+    <script src="https://kit.fontawesome.com/1a5bece722.js" crossorigin="anonymous"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">   
+    <title>Socket.IO chat</title>
+    <style>
+    
+
+     
+      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+      #input:focus { outline: none; }
+      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages > li { padding: 0.5rem 1rem; }
+      #messages > li:nth-child(odd) { background: #efefef; 
+      text-align: right;}
+   
+
+
+ 
+ </style>
+  </head>
+  <body style="background-color:snow;">
+    <nav class="bg-warning text-white text-center pb-1 pt-1">
+      <h2>Welcome in Lab 10</h2>
+      </nav>
+
+
+            <div class=" border border-warning position-absolute top-50 start-50 translate-middle shadow-lg p-3 mb-5 bg-body rounded"">
+            <div class="card text-dark bg-light mb-3 shadow-md border border-primary" style="max-width: 18rem;">
+              <div class="text-center card-header fw-bolder h4" style="background-color: greenyellow;">Chat Application </div>
+              <div class="card-body">
+              
+                <ul id="messages"  class="fw-bolder h6" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;"></ul>
+                <form id="form"> 
+                <input id="input" placeholder="Write Something..." class="border border-dark" style="width: 150px;" />
+                
+                <button class=" text-Success bg-success pb-1 pt-1"  id="btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                  <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+                 Sudhir</svg></button>
+                </form>
+              </div>
+            </div>
+          </div>
+         
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    let btnSend = document.getElementById('btn');
+    btnSend.addEventListener('click', () =>
+    {
+   
+    if(btnSend.innerText == 'Sudhir')
+    {
+      if(input.value!='')
+      {
+      btnSend.innerText = 'Nikhil';
+      }
+      else
+      {
+        alert("Hey Sudhir  can you please Enter a proper message")
+      }
+    }
+    else
+    {
+      if(input.value!='')
+      {
+      btnSend.innerText = 'Sudhir';
+      }
+      else
+      {
+        alert("Hey Nikhil  can you please Enter a proper message")
+      }
+    }
+    });
+
+      var socket = io();
+    var date= new Date;
+    da={
+      hr:date.getHours(),
+      mn:date.getMinutes()
+    }
+
+      var messages = document.getElementById('messages');
+      var form = document.getElementById('form');
+      var input = document.getElementById('input');
+      var name=prompt("Hello,Enter Your name:");
+    
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (input.value) {
+          socket.emit('chat message', name + ":"+input.value);
+          input.value = '';
+        }
+      });
+    
+      socket.on('chat message', function(msg) {
+        var item = document.createElement('li');
+        item.textContent = msg +da.hr+":"+da.mn;
+        // item.textContent = date;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+    </script>
+    
+  </body>
+</html>
